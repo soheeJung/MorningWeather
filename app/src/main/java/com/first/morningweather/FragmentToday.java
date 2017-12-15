@@ -3,12 +3,17 @@ package com.first.morningweather;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.first.morningweather.api.ApiConnector;
+import com.first.morningweather.api.data.Result;
+import com.first.morningweather.api.data.Row;
+
+import java.util.List;
 
 import retrofit2.Retrofit;
 
@@ -38,9 +43,7 @@ public class FragmentToday extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Data정보 받아오기
-        ApiConnector apiConnector = new ApiConnector();
-        apiConnector.weatherApi(getContext());
+
 
     }
 
@@ -48,8 +51,16 @@ public class FragmentToday extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+       final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        //Data정보 받아오기
+        ApiConnector apiConnector = new ApiConnector();
+        apiConnector.weatherApi(getContext(), new ApiConnector.onDataUpdateListener() {
+            @Override
+            public void onUpdated(List<Row> result) {
+
+            }
+        });
         return rootView;
 
     }

@@ -7,9 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.first.morningweather.api.ApiConnector;
 import com.first.morningweather.api.data.MyPojo;
+import com.first.morningweather.api.data.Row;
+
+import java.util.List;
 
 /**
  * Created by sohee on 2017-12-12.
@@ -45,7 +50,22 @@ public class FragmentSeoul extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_seoul, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        //ListView
+        ListViewAdapter listViewAdapter = new ListViewAdapter(getContext());
+        //addItem 넣기.
+        ListView listView = (ListView) rootView.findViewById(R.id.weatherList);
+        listView.setAdapter(listViewAdapter);
+
+        //Data정보 받아오기
+        ApiConnector apiConnector = new ApiConnector();
+        apiConnector.weatherApi(getContext(), new ApiConnector.onDataUpdateListener() {
+            @Override
+            public void onUpdated(List<Row> result) {
+
+            }
+        });
+
         return rootView;
 
     }

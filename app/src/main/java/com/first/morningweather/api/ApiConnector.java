@@ -2,6 +2,7 @@ package com.first.morningweather.api;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import com.first.morningweather.MainActivity;
 import com.first.morningweather.R;
 import com.first.morningweather.api.data.MyPojo;
 import com.first.morningweather.api.data.RealtimeWeatherStation;
+import com.first.morningweather.api.data.Result;
+import com.first.morningweather.api.data.Row;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import okhttp3.Response;
 import retrofit2.Call;
@@ -36,7 +40,7 @@ public class ApiConnector {
             .build();
 
 
-    public static void weatherApi(final Context context){
+    public static void weatherApi(final Context context,final onDataUpdateListener listener){
         //http://openapi.seoul.go.kr:8088/59616f796c736f73383649525a4d46/xml/RealtimeWeatherStation/1/5/
         //final String serviceKey = context.getResources().getString(R.string.gov_weather_api_key)+"/json/RealtimeWeatherStation/1/5/";
 
@@ -50,12 +54,13 @@ public class ApiConnector {
                 Call<MyPojo> call = api.getWeatherInformation();
 
                try{
-                    Log.e("::", call.request().toString());
-                   final String result = call.execute().body().getRealtimeWeatherStation().getRow().get(0).getNAME();
+                    Log.e("--", call.request().toString());
+                   final List<Row> mRowResult = call.execute().body().getRealtimeWeatherStation().getRow();
+
                     ((Activity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
+                            listener.onUpdated(mRowResult);
                         }
                     });
 
@@ -65,6 +70,9 @@ public class ApiConnector {
             }
 
         }).start();
+    }
 
+    public interface onDataUpdateListener{
+        public void onUpdated(List<Row> result);
     }
 }

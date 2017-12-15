@@ -1,5 +1,7 @@
 package com.first.morningweather;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -69,14 +71,7 @@ public class MainActivity extends AppCompatActivity {
         //Data정보 받아오기
        // ApiConnector apiConnector = new ApiConnector();
        // apiConnector.weatherApi(this);
-        int b = 0;
-        a(b);
-        Log.d("iiiiiiii",b+"");
 
-    }
-
-    public void a(int a){
-        a=8;
     }
 
     @Override
